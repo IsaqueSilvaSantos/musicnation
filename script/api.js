@@ -2,6 +2,7 @@ let form = document.querySelector(".form");
 let result = document.querySelector(".result_container");
 let prevNextContainer = document.querySelector(".prev_next_container");
 let toolTipContainer = document.querySelector(".tool_tip_container");
+let isPlaying = false;
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -83,9 +84,20 @@ const GET_LYRICS = async (songData, divElement) => {
     .then((data) => {
       if (data.type !== "song_notfound") {
         let lyrics = data.mus[0].text;
+        console.log(songData);
 
         result.innerHTML = `
           <div class="lyrics-container">
+            <div class="audio_container">
+              <audio controls preload="auto" hidden>
+                <source src="${songData.preview}" type="audio/mp3">
+              </audio>
+          
+              <button onclick="TOOGLE_PLAY(this)">
+                <i class="fa fa-play"></i>
+              </button>
+            </div>
+
             <p class="title">${songData.artist.name} - ${songData.title}</p>
             <p class="lyrics">${lyrics.replace(/(\r\n|\r|\n)/g, "<br>")}</p>
           </div>
@@ -95,7 +107,7 @@ const GET_LYRICS = async (songData, divElement) => {
           item.style.opacity = "1";
           item.style.pointerEvents = "all";
         });
-      
+
         cardLoaderAnimation.hidden = true;
         divElement.style.opacity = "0.8";
         divElement.style.pointerEvents = "none";
@@ -113,3 +125,29 @@ const TOOLTIP_ACTION = () => {
     toolTipContainer.style.right = "-9999px";
   }, 3000);
 };
+
+
+/**
+ * It takes a button element as an argument, finds the audio element in the same parent element, and
+ * toggles the play/pause state of the audio element.
+ * @param btnElement - The button element that was clicked
+ */
+const TOOGLE_PLAY = (btnElement) => {
+  let myAudio = btnElement.parentElement.querySelector("audio");
+  let playPauseIcon = btnElement.querySelector("i");
+
+  console.log(playPauseIcon);
+
+  isPlaying ? myAudio.pause() : myAudio.play();
+
+  myAudio.onplaying = () => {
+    isPlaying = true;
+    playPauseIcon.classList.remove("fa-play");
+    playPauseIcon.classList.add("fa-pause");
+  };
+  myAudio.onpause = () => {
+    isPlaying = false;
+    playPauseIcon.classList.remove("fa-pause");
+    playPauseIcon.classList.add("fa-play");
+  };
+}

@@ -65,6 +65,7 @@ body {
 }
 
 .result_container {
+  position: relative;
   padding: 1rem;
   margin: auto;
   max-width: 1200px;
@@ -119,6 +120,20 @@ body {
 .result_container .lyrics-container .title {
   margin-bottom: 2rem;
   font-size: 1.5rem;
+}
+.result_container .lyrics-container .audio_container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+.result_container .lyrics-container .audio_container button {
+  padding: 15px;
+  box-shadow: 0px 0px 3px #222;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.result_container .lyrics-container .audio_container button i {
+  font-size: 15px;
 }
 
 .tool_tip_container {

@@ -70,6 +70,7 @@ body {
 }
 
 .result_container {
+  position: relative;
   padding: 1rem;
   margin: auto;
   max-width: 1200px;
@@ -130,6 +131,24 @@ body {
     .title {
       margin-bottom: 2rem;
       font-size: 1.5rem;
+    }
+
+    .audio_container {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+
+
+      button {
+        padding: 15px;
+        box-shadow: 0px 0px 3px #222;
+        border-radius: 50%;
+        cursor: pointer;
+
+        i {
+          font-size: 15px;
+        }
+      }
     }
   }
 }
