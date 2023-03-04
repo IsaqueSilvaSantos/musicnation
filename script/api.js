@@ -90,7 +90,7 @@ const GET_LYRICS = async (songData, divElement) => {
           <div class="lyrics-container">
             <div class="audio_container">
               <audio controls preload="auto" hidden>
-                <source src="${songData.preview}" type="audio/mp3">
+                <source src="${songData.preview}" type="audio/mpeg">
               </audio>
           
               <button onclick="TOOGLE_PLAY(this)">
