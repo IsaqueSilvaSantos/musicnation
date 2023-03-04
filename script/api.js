@@ -84,7 +84,6 @@ const GET_LYRICS = async (songData, divElement) => {
     .then((data) => {
       if (data.type !== "song_notfound") {
         let lyrics = data.mus[0].text;
-        console.log(songData);
 
         result.innerHTML = `
           <div class="lyrics-container">
@@ -135,8 +134,6 @@ const TOOLTIP_ACTION = () => {
 const TOOGLE_PLAY = (btnElement) => {
   let myAudio = btnElement.parentElement.querySelector("audio");
   let playPauseIcon = btnElement.querySelector("i");
-
-  console.log(playPauseIcon);
 
   isPlaying ? myAudio.pause() : myAudio.play();
 
