@@ -72,7 +72,7 @@ const GET_LYRICS = async (songData, divElement) => {
   let cardLoaderAnimation = divElement.querySelector(".card-loader");
 
   allDivElement.forEach((item) => {
-    item.style.opacity = "0.8";
+    item.style.opacity = "0.7";
     item.style.pointerEvents = "none";
   });
 
@@ -82,7 +82,8 @@ const GET_LYRICS = async (songData, divElement) => {
   fetch(`https://api.vagalume.com.br/search.php?art=${songData.artist.name}&mus=${songData.title}`)
     .then((response) => response.json())
     .then((data) => {
-      if (data.type !== "song_notfound") {
+      if (!data.type.includes("not")) {
+
         let lyrics = data.mus[0].text;
 
         result.innerHTML = `
@@ -108,7 +109,7 @@ const GET_LYRICS = async (songData, divElement) => {
         });
 
         cardLoaderAnimation.hidden = true;
-        divElement.style.opacity = "0.8";
+        divElement.style.opacity = "0.7";
         divElement.style.pointerEvents = "none";
         divElement.classList.add("inactive");
 
