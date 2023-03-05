@@ -222,6 +222,10 @@ body {
     }
   }
 
+  .card {
+    flex: 1 1 45% !important;
+  }  
+
   .lyrics-container .title {
     font-size: 1.2rem !important;
     margin-bottom: 1.5rem !important;
