@@ -1,12 +1,17 @@
-window.onscroll = function() {myFunction()};
+window.onscroll = function () {
+  STYICKY_HEADER();
+};
 
-var header = document.querySelector(".search_container");
-var sticky = header.offsetTop;
+let header = document.querySelector(".search_container");
+let sticky = header.offsetTop;
+let loader = document.querySelector(".loader");
 
-function myFunction() {
+const STYICKY_HEADER = () => {
   if (window.pageYOffset > sticky) {
     header.classList.add("sticky");
   } else {
     header.classList.remove("sticky");
   }
-}
+};
+
+window.addEventListener("load", () => (loader.style.display = "none"));
