@@ -56,7 +56,7 @@ form.addEventListener("submit", async (e) => {
  * @param callback - a function that will be called when the data is ready.
  */
 const SEARCH_SONG_LIST = async (term, callback) => {
-  let res = await fetch(`https://api.lyrics.ovh/suggest/${term}`);
+  let res = await fetch(`https://musicnation.herokuapp.com/getsong/${term}`);
   let data = await res.json();
 
   callback(data);
@@ -79,7 +79,7 @@ const GET_LYRICS = async (songData, divElement) => {
   cardLoaderAnimation.hidden = false;
   divElement.style.opacity = "1";
 
-  fetch(`https://api.vagalume.com.br/search.php?art=${songData.artist.name}&mus=${songData.title}`)
+  fetch(`https://musicnation.herokuapp.com/getlyrics/${songData.artist.name}/${songData.title}`)
     .then((response) => response.json())
     .then((data) => {
       if (!data.type.includes("not")) {
