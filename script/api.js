@@ -79,29 +79,49 @@ const GET_LYRICS = async (songData, divElement) => {
   cardLoaderAnimation.hidden = false;
   divElement.style.opacity = "1";
 
-  fetch(`https://musicnation.herokuapp.com/getlyrics/${songData.artist.name}/${songData.title}`)
+  let songFileUrl = songData.preview.substring(7);
+
+  fetch(`https://musicnation.herokuapp.com/getlyrics/${songData.artist.name}/${songData.title}/${songFileUrl.replace(/\//g, "SLASH")}`)
     .then((response) => response.json())
     .then((data) => {
       if (!data.type.includes("not")) {
 
         let lyrics = data.mus[0].text;
+        var xhr = new XMLHttpRequest();
+        var uniqueParam = Date.now();
 
         result.innerHTML = `
           <div class="lyrics-container">
             <div class="audio_container">
               <audio controls preload="auto" hidden>
-                <source src="${songData.preview}" type="audio/mpeg">
+
               </audio>
           
-              <button onclick="TOOGLE_PLAY(this)">
-                <i class="fa fa-play"></i>
+              <button onclick="TOOGLE_PLAY(this)" style="display: flex" disabled>
+                <span class="spinner spinner--quarter" style="--width: 20px;--color: #222;"></span>
               </button>
             </div>
-
+            
             <p class="title">${songData.artist.name} - ${songData.title}</p>
             <p class="lyrics">${lyrics.replace(/(\r\n|\r|\n)/g, "<br>")}</p>
           </div>
         `;
+
+          result.querySelector("button").disabled = false;
+
+          fetch('https://musicnation.herokuapp.com/getsongfile/')
+          .then(response => response.blob())
+          .then(blob => {
+            const url = URL.createObjectURL(blob);
+            const audio = new Audio();
+            audio.src = url;
+            audio.controls = true;
+            // document.body.appendChild(audio);
+            result.querySelector("audio").innerHTML = `<source src="${url}" type="audio/mpeg">`
+
+            result.querySelector("button").innerHTML = `<i class="fa fa-play"></i>`;
+            result.querySelector("button").disabled = false;
+          });
       } else {
         allDivElement.forEach((item) => {
           item.style.opacity = "1";
