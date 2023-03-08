@@ -64,6 +64,46 @@ body {
   border-radius: 0px 4px 4px 0px;
 }
 
+.lyric_result_container {
+  margin: auto;
+  position: relative;
+  padding: 1rem;
+  max-width: 1200px;
+  width: 98%;
+  border-radius: 5px;
+  margin-top: 2rem;
+  box-shadow: 1px 1px 5px #222;
+  background: #eeeeee;
+  margin-bottom: 2rem;
+  display: none;
+}
+.lyric_result_container .lyrics-container {
+  margin-top: 3rem;
+}
+.lyric_result_container .lyrics-container .audio_container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+.lyric_result_container .lyrics-container .audio_container button {
+  padding: 15px;
+  box-shadow: 0px 0px 3px #222;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.lyric_result_container .lyrics-container .audio_container button i {
+  font-size: 15px;
+}
+.lyric_result_container .lyrics-container .lyrics_div {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+}
+.lyric_result_container .lyrics-container .lyrics_div div .title {
+  margin-bottom: 2rem;
+  font-size: 1.4rem;
+}
+
 .result_container {
   position: relative;
   padding: 1rem;
@@ -109,31 +149,6 @@ body {
 }
 .result_container .card:hover {
   transform: scale(1.01);
-}
-.result_container .lyrics-container {
-  margin-top: 2rem;
-  width: 100%;
-  display: grid;
-  justify-content: start;
-  text-align: start;
-}
-.result_container .lyrics-container .title {
-  margin-bottom: 2rem;
-  font-size: 1.5rem;
-}
-.result_container .lyrics-container .audio_container {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-}
-.result_container .lyrics-container .audio_container button {
-  padding: 15px;
-  box-shadow: 0px 0px 3px #222;
-  border-radius: 50%;
-  cursor: pointer;
-}
-.result_container .lyrics-container .audio_container button i {
-  font-size: 15px;
 }
 
 .tool_tip_container {
@@ -214,6 +229,9 @@ body {
   .header .txt1,
   .header .txt2 {
     font-size: 1.5rem;
+  }
+  .lyrics_div {
+    flex-wrap: wrap !important;
   }
   .lyrics-container .title {
     font-size: 0.8rem !important;

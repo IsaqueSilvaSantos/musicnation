@@ -1,5 +1,6 @@
 let form = document.querySelector(".form");
 let result = document.querySelector(".result_container");
+let lyricResult = document.querySelector(".lyric_result_container");
 let prevNextContainer = document.querySelector(".prev_next_container");
 let toolTipContainer = document.querySelector(".tool_tip_container");
 let isPlaying = false;
@@ -46,6 +47,8 @@ form.addEventListener("submit", async (e) => {
     } else {
       result.innerHTML = "Nenhum resultado para essa pesquisa...";
     }
+
+    lyricResult.style.display = "none";
   });
 });
 
@@ -63,9 +66,9 @@ const SEARCH_SONG_LIST = async (term, callback) => {
 };
 
 /**
- * It gets the lyrics of a song and displays it on the page
- * @param songData - is an object that contains the artist name and song title.
- * @param divElement - The div element that was clicked.
+ * It fetches the lyrics of a song from a server and displays it on the page
+ * @param songData - {
+ * @param divElement - The div element that was clicked
  */
 const GET_LYRICS = async (songData, divElement) => {
   let allDivElement = divElement.parentElement.querySelectorAll(".card");
@@ -85,12 +88,20 @@ const GET_LYRICS = async (songData, divElement) => {
     .then((response) => response.json())
     .then((data) => {
       if (!data.type.includes("not")) {
-
         let lyrics = data.mus[0].text;
-        var xhr = new XMLHttpRequest();
-        var uniqueParam = Date.now();
+        let regexPattern = /\[(.*?)\]/;
+        let translatedLyrics;
+        let updatedString = "";
+        let textInsideBrackets = "";
 
-        result.innerHTML = `
+        if (data.mus[0].translate) {
+          translatedLyrics = data.mus[0].translate[0].text;
+          let match = translatedLyrics.match(regexPattern);
+          textInsideBrackets = match[1];
+          updatedString = translatedLyrics.replace(match[0], "").trimStart();
+        }
+
+        lyricResult.innerHTML = `
           <div class="lyrics-container">
             <div class="audio_container">
               <audio controls preload="auto" hidden>
@@ -101,27 +112,43 @@ const GET_LYRICS = async (songData, divElement) => {
                 <span class="spinner spinner--quarter" style="--width: 20px;--color: #222;"></span>
               </button>
             </div>
-            
-            <p class="title">${songData.artist.name} - ${songData.title}</p>
-            <p class="lyrics">${lyrics.replace(/(\r\n|\r|\n)/g, "<br>")}</p>
+
+            <div class="lyrics_div">
+              <div>
+                <p class="title">${songData.artist.name} - ${songData.title}</p>
+                <p class="lyrics">${lyrics.replace(/(\r\n|\r|\n)/g, "<br>")}</p>
+              </div>
+              <div class="translated" style="${data.mus[0].translate ? "display: block" : "display: none"}">
+                <p class="title">${songData.artist.name} - ${textInsideBrackets}</p>
+                <p class="lyrics">${updatedString.replace(/(\r\n|\r|\n)/g, "<br>")}</p>
+              </div>          
+            </div>
           </div>
         `;
 
-          result.querySelector("button").disabled = false;
+        lyricResult.style.display = "block";
+        lyricResult.querySelector("button").disabled = false;
 
-          fetch('https://musicnation.herokuapp.com/getsongfile/')
-          .then(response => response.blob())
-          .then(blob => {
+        fetch("https://musicnation.herokuapp.com/getsongfile/")
+          .then((response) => response.blob())
+          .then((blob) => {
             const url = URL.createObjectURL(blob);
             const audio = new Audio();
             audio.src = url;
             audio.controls = true;
-            // document.body.appendChild(audio);
-            result.querySelector("audio").innerHTML = `<source src="${url}" type="audio/mpeg">`
 
-            result.querySelector("button").innerHTML = `<i class="fa fa-play"></i>`;
-            result.querySelector("button").disabled = false;
+            lyricResult.querySelector("audio").innerHTML = `<source src="${url}" type="audio/mpeg">`;
+            lyricResult.querySelector("button").innerHTML = `<i class="fa fa-play"></i>`;
+            lyricResult.querySelector("button").disabled = false;
           });
+
+        allDivElement.forEach((item) => {
+          item.style.opacity = "1";
+          item.style.pointerEvents = "all";
+        });
+
+        cardLoaderAnimation.hidden = true;
+        window.scrollTo(0, 0);
       } else {
         allDivElement.forEach((item) => {
           item.style.opacity = "1";
@@ -146,7 +173,6 @@ const TOOLTIP_ACTION = () => {
   }, 3000);
 };
 
-
 /**
  * It takes a button element as an argument, finds the audio element in the same parent element, and
  * toggles the play/pause state of the audio element.
@@ -168,4 +194,4 @@ const TOOGLE_PLAY = (btnElement) => {
     playPauseIcon.classList.remove("fa-pause");
     playPauseIcon.classList.add("fa-play");
   };
-}
+};
