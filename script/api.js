@@ -113,7 +113,7 @@ const GET_LYRICS = async (songData, divElement) => {
               </button>
             </div>
 
-            <div class="lyrics_div">
+            <div class="lyrics_div" style="${data.mus[0].translate ? "justify-content: center" : "justify-content: start"}">
               <div>
                 <p class="title">${songData.artist.name} - ${songData.title}</p>
                 <p class="lyrics">${lyrics.replace(/(\r\n|\r|\n)/g, "<br>")}</p>
