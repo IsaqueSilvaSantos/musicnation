@@ -4,6 +4,9 @@ let lyricResult = document.querySelector(".lyric_result_container");
 let prevNextContainer = document.querySelector(".prev_next_container");
 let toolTipContainer = document.querySelector(".tool_tip_container");
 let isPlaying = false;
+let stopExecution = false;
+let myOptionsContainer = document.querySelector(".search_container .options_list_container ul");
+
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -63,6 +66,52 @@ const SEARCH_SONG_LIST = async (term, callback) => {
   let data = await res.json();
 
   callback(data);
+};
+
+/**
+ * The function sets the value of an input element and clears a container.
+ * @param term - The term parameter is a string that represents the search term that the user wants to
+ * suggest. It is used to populate the value of the input element and clear the options container.
+ */
+const ADD_SUGESTIONS = (term) => {
+  let inputElement = document.querySelector(".search_container form input[name='term']");
+
+  inputElement.value = term;
+  myOptionsContainer.innerHTML = "";
+  stopExecution = true;
+};
+
+/**
+ * The function retrieves song suggestions from an API based on user input and displays them in a list.
+ * @param element - The input element that triggered the search list suggestions toggle.
+ * @returns It is not clear what is being returned as there is no return statement in the code snippet.
+ * The function seems to be generating a list of song options based on user input and adding them to
+ * the HTML DOM.
+ */
+const TOGGLE_SEARCH_LIST_SUGESTIONS = async (element) => {
+  myOptionsContainer.innerHTML = "";
+
+  let res = await fetch(`https://musicnation.herokuapp.com/getsong/${element.value}`);
+  let data = await res.json();
+
+  let songOptionsArr = data.data.map((obj) => `${obj.artist.name} - ${obj.title}`).splice(0, 5);
+
+  songOptionsArr.forEach(item => console.log(item));
+
+  for (let i = 0; i < songOptionsArr.length; i++) {
+    let myOptions = document.querySelectorAll(".search_container .options_list_container ul li");
+    let item = songOptionsArr[i];
+    let li = document.createElement("li");
+
+    li.append(item);
+
+    myOptionsContainer.append(li);
+
+    li.setAttribute("onclick", `ADD_SUGESTIONS('${item}')`);
+
+    if (!stopExecution) return
+    if (myOptions.length > 5 || !stopExecution) return;
+  }
 };
 
 /**

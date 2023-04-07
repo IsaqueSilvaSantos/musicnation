@@ -15,7 +15,15 @@
 
     <div class="search_container">
       <form class="form" autocomplete="off">
-        <input type="text" name="term" placeholder="Procurar Música.." required />
+        <div class="search_input_container">
+          <input type="text" name="term" placeholder="Procurar Música.." oninput="TOGGLE_SEARCH_LIST_SUGESTIONS(this)" required />
+
+          <div class="options_list_container">
+            <ul>
+
+            </ul>
+          </div>
+        </div>
         <button type="submit"><i class="fas fa-search"></i></button>
         <input type="submit" hidden />
       </form>
@@ -32,7 +40,7 @@
     </div>
 
     <div class="loader">
-      <span class="spinner spinner--quarter" style="--width: 50px;--color: #222;"></span>
+      <span class="spinner spinner--quarter" style="--width: 50px; --color: #222"></span>
     </div>
 
     <!-- Font Awsome Script -->

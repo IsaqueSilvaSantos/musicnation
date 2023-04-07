@@ -49,13 +49,37 @@ body {
 .search_container form {
   display: flex;
 }
-.search_container form input {
+.search_container form .search_input_container {
+  position: relative;
+}
+.search_container form .search_input_container input {
   width: 100%;
   max-width: 400px;
   padding: 5px 20px;
   border: none;
   outline: none;
   border-radius: 4px 0px 0px 4px;
+}
+.search_container form .search_input_container .options_list_container {
+  position: absolute;
+  z-index: 999;
+  right: 0;
+  left: 0;
+  background-color: #fff;
+  border-radius: 5px;
+}
+.search_container form .search_input_container .options_list_container ul {
+  list-style: none;
+  display: grid;
+}
+.search_container form .search_input_container .options_list_container ul li {
+  cursor: pointer;
+  border-bottom: 1px solid #999;
+  padding: 10px;
+  transition: 0.3s;
+}
+.search_container form .search_input_container .options_list_container ul li:hover {
+  background-color: #5abdff;
 }
 .search_container form button {
   padding: 0.3rem;

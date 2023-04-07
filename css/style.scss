@@ -51,13 +51,43 @@ body {
   form {
     display: flex;
 
-    input {
-      width: 100%;
-      max-width: 400px;
-      padding: 5px 20px;
-      border: none;
-      outline: none;
-      border-radius: 4px 0px 0px 4px;
+    .search_input_container {
+      position: relative;
+
+      input {
+        width: 100%;
+        max-width: 400px;
+        padding: 5px 20px;
+        border: none;
+        outline: none;
+        border-radius: 4px 0px 0px 4px;
+      }
+
+      .options_list_container {
+        position: absolute;
+        z-index: 999;
+        right: 0;
+        left: 0;
+        background-color: #fff;
+        border-radius: 5px;
+
+        ul {
+          list-style: none;
+          display: grid;
+          
+          li {
+            cursor: pointer;
+            border-bottom: 1px solid #999;
+            padding: 10px;
+            transition: .3s;
+          }
+
+          li:hover {
+            background-color: #5abdff;
+          }
+        }
+      }
+  
     }
 
     button {
